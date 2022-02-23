@@ -6,11 +6,9 @@
 //   By: nprimo <marvin@42.fr>                      +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/02/22 23:14:55 by nprimo            #+#    #+#             //
-//   Updated: 2022/02/22 23:36:14 by nprimo           ###   ########.fr       //
+//   Updated: 2022/02/23 00:02:45 by nprimo           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
-
-let romanKey = ['I', 'V', 'X', 'L', 'C', 'D', 'M'];
 
 function getRomanQuantity(num) 
 {
@@ -18,7 +16,7 @@ function getRomanQuantity(num)
 	let romanQuantity = [];
 	let i;
   
-	for (i = romanKey.length - 1; i >= 0; i--) 
+	for (i = romanValue.length - 1; i >= 0; i--) 
 	{
     	romanQuantity.unshift(Math.floor(num / romanValue[i]));
     	num -= romanQuantity[0] * romanValue[i]; 
@@ -26,9 +24,31 @@ function getRomanQuantity(num)
 	return (romanQuantity);
 }
 
-let testNumbers = ['10', '21', '14', '23'];
+function convertToRoman(num)
+{
+	let romanNum = "";
+	let romanKey = ["I", "V", "X", "L", "C", "D", "M"];
+	let	romaQuantity = [];
+	let i;
+	
+	romanQuantity = getRomanQuantity(num);
+	for (i = romanKey.length - 1; i >= 0; i--) 
+	{
+		if (romanQuantity[i] !== 4) {
+			romanNum += romanKey[i].repeat(romanQuantity[i]);}
+		else
+		{
+			romanNum += romanKey[i];
+			romanNum += romanKey[i + 1];
+		}
+	}
+	return (romanNum);
+}
 
-for (let i = 0; i < testNumbers.length; i++)
+let testNumbers = ['10', '21', '14', '23'];
+let i = 0;
+
+for (; i < testNumbers.length; i++)
 {
 	console.log('For number ' + 
 		testNumbers[i] + 
