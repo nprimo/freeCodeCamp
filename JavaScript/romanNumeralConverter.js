@@ -6,7 +6,7 @@
 //   By: nprimo <marvin@42.fr>                      +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/02/22 23:14:55 by nprimo            #+#    #+#             //
-//   Updated: 2022/02/23 00:02:45 by nprimo           ###   ########.fr       //
+//   Updated: 2022/02/23 00:05:57 by nprimo           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -34,7 +34,7 @@ function convertToRoman(num)
 	romanQuantity = getRomanQuantity(num);
 	for (i = romanKey.length - 1; i >= 0; i--) 
 	{
-		if (romanQuantity[i] !== 4) {
+		if (romanQuantity[i] !== 4 && romanQuantity[i] !== 9) {
 			romanNum += romanKey[i].repeat(romanQuantity[i]);}
 		else
 		{
@@ -45,7 +45,7 @@ function convertToRoman(num)
 	return (romanNum);
 }
 
-let testNumbers = ['10', '21', '14', '23'];
+let testNumbers = ['10', '21', '14', '23', 99];
 let i = 0;
 
 for (; i < testNumbers.length; i++)
