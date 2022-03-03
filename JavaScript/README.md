@@ -4,7 +4,7 @@
 
 From the curriculum of [freeCodeCamp](https://www.freecodecamp.org/learn/)
 
-### 1. Palindrome Checker () 
+### 1. Palindrome Checker (palindromeChecker.js) 
 
 Return `true` if the given string is a palindrome. Otherwise, return `false`.
 
