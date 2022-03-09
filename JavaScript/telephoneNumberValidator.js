@@ -6,7 +6,7 @@
 /*   By: nprimo <nprimo@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 16:09:38 by nprimo            #+#    #+#             */
-/*   Updated: 2022/03/03 14:18:51 by nprimo           ###   ########.fr       */
+/*   Updated: 2022/03/09 21:59:06 by nprimo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,71 +16,73 @@ function cleanStr(str) {
 	return str.replace(regex, '');
 }
 
-function correctUseOfBrackets(str) {
-	let indexOpen = str.indexOf('(');
-	let indexClose = str.indexOf(')');
+function isNumber(str) {
+	if (Number(cleanStr(str))) {
+		return true;
+	}
+	return false;
+}
 
+function correctLen(str) {
+	let cleanedStr = String(cleanStr(str));
+
+	if ((cleanedStr.length === 11 &&
+		cleanedStr.charAt(0) === '1') ||
+		cleanedStr.length === 10) {
+			return true;
+	} else {
+		return false;
+	}
+}
+
+function correctUseOfBrackets(str) {
+	let trimmedStr = str.replace(/[\' \']/g, '');
+	let indexOpen = trimmedStr.indexOf('(');
+	let countIndexOpen = str.split('(').length - 1;
+	let indexClose = trimmedStr.indexOf(')');
+	let countIndexClosed = str.split(')').length - 1;
+	
 	if (indexOpen === -1 && indexClose === -1) {
 		return true;
-	} else if (indexOpen !== -1 && (indexClose - indexOpen) === 4) {
-		return correctUseOfBrackets(str.substr(indexClose + 1));
+	} else if (
+		(countIndexClosed === 1 && countIndexOpen === 1) &&
+		((indexOpen === 0 && indexClose === 4) ||
+		(indexOpen === 1 && indexClose == 5))) {
+			return true;
 	}
 	return false;
 }
 
 function correctUseOfDash(str) {
-	let splitStr = str.split('-');
-	let lastIndex = splitStr.length - 1;
+	let splitStr = str.replace(/[\' \'()]/g, '').split('-');
+	let numDash = splitStr.length - 1;
 
-	if ([3, 2].indexOf(splitStr.length) > -1 &&
-		splitStr[lastIndex].length === 4 &&
-		splitStr[lastIndex - 1].length === 3) {
-			if (splitStr.length === 3 &&
-				[5, 3].indexOf(splitStr[lastIndex - 2].length) == -1) {
-					return false;
-				}
-			return true;
-	} else if (splitStr.length == 1) {
+	if (numDash == 0) {
+		return true;
+	} else if (numDash == 1 &&
+	 	(splitStr[0].length === 6 || splitStr[0].length === 7)) {
+		return true;
+	} else if (numDash == 2 &&
+		(splitStr[0].length === 3 || splitStr[0].length === 4) &&
+		splitStr[1].length === 3 &&
+		splitStr[2].length === 4) {
 		return true;
 	}
 	return false;
 }
 
 function telephoneCheck(str) {
-	let num = Number(cleanStr(str));
-
-	if (correctUseOfBrackets(str) &&
-		correctUseOfDash(str) &&
-		num &&
-		(String(num).length === 10 || String(num).length === 11)) {
-		return true;
-	}
-	return false;
+	console.log(correctUseOfDash(str));
+	return (isNumber(str) &&
+			correctLen(str) &&
+			correctUseOfBrackets(str) &&
+			correctUseOfDash(str))
 }
 
 let tests = [
-	"555-5555",
-	"5555555",
-	"5555555555",
-	"1 555)555-5555",
-	"123**&!!asdf#",
-	"55555555",
-	"(6054756961)",
-	"2 (757) 622-7382",
-	"0 (757) 622-7382",
-	"-1 (757) 622-7382",
-	"2 757 622-7382",
-	"10 (757) 622-7382",
-	"27576227382",
-	"(275)76227382",
-	"2(757)6227382",
-	"2(757)622-7382",
-	"555)-555-5555",
-	"(555-555-5555",
-	"(555)-555-5555",
-	"11 555-555-5555",
-	"(555)5(55?)-5555",
-	"55 55-55-555-5",
+	"1(555)555-5555",
+	"1 (555) 555-5555",
+	"(555)555-5555"
 ]
 
 for (let i = 0; i < tests.length; i++) {
