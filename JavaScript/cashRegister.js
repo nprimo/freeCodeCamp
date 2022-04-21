@@ -59,6 +59,15 @@ function getCashTypeChange(changeValue, cashType, cid) {
 	return (-1);
 }
 
+function getDrawerSum(cid) {
+	let sum = 0;
+
+	for (let i = 0; i < cid.length; i++) {
+		sum += cid[i][1];
+	}
+	return (sum);
+}
+
 function checkCashRegister(price, cash, cid) {
 	let status = "OPEN";
 	let change = [];
@@ -86,6 +95,10 @@ function checkCashRegister(price, cash, cid) {
 	if (change.length === 0 || parseFloat(changeValue) !== 0) {
 		change = [];
 		status = 'INSUFFICIENT_FUNDS';
+	}
+	if (getDrawerSum(cid) === getDrawerSum(change)) {
+		change = cid;
+		status = "CLOSED";
 	}
 	return {'status': status, 'change': change};
 }
