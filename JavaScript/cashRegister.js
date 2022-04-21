@@ -26,18 +26,39 @@ function priceToCashConvert(price, cashValues, cashType) {
 	return Math.floor(price / cashValues[cashType]);
 }
 
+function getCashTypeInDrawer(cashType, cid) {
+	for (let i = 0; i < cid.length; i++) {
+		if (cid[i][0] == cashType) {
+			return (cid[i][1]);
+		}
+	}
+}
+
 function checkCashRegister(price, cash, cid) {
 	let status = "INSUFFICIENT_FUNDS";
 	let changeValue = cash - price;
-	let change = cid;
+	let change;
 
+	for (cashType in cashValues) {
+		// do something
+	}
 	return {
 		"status": status,
 		change
 	};
 }
 
+let cid = [
+	["PENNY", 1.01],
+	["NICKEL", 2.05],
+	["DIME", 3.1],
+	["QUARTER", 4.25],
+	["ONE", 90],
+	["FIVE", 55],
+	["TEN", 20],
+	["TWENTY", 60],
+	["ONE HUNDRED", 100]
+  ];
+  let change = [];
 
-for (key in cashValues) {
-	console.log(priceToCashConvert(23.63, cashValues, key))
-}
+  console.log(getCashTypeInDrawer("FIVE", cid));
