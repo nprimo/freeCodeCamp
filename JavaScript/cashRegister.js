@@ -10,20 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-cashValues = {
-	"ONE HUNDRED": 100,
-	"TWENTY": 20,
-	"TEN": 10,
-	"FIVE": 5,
-	"ONE": 1,
-	"QUARTER": 0.25,
-	"DIME": 0.1,
-	"NICKEL": 0.05,
-	"PENNY": 0.01,
-}
-
 function priceToCashConvert(price, cashType) {
-	return Math.floor(price / cashValues[cashType]);
+	let cashValues = [
+		["ONE HUNDRED", 100],
+		["TWENTY", 20],
+		["TEN", 10],
+		["FIVE", 5],
+		["ONE", 1],
+		["QUARTER", 0.25],
+		["DIME", 0.1],
+		["NICKEL", 0.05],
+		["PENNY", 0.01],
+	]
+
+	for (let i = 0; i < cashValues.length; i++) {
+		if (cashValues[i][0] === cashType) {
+			return Math.floor(price / cashValues[i][1]);
+		}
+	}
 }
 
 function cashTypeInDrawer(cashType, cid) {
@@ -34,27 +38,56 @@ function cashTypeInDrawer(cashType, cid) {
 	}
 }
 
+function getCashTypeChange(changeValue, cashType, cid) {
+	let cashValues = {
+		"ONE HUNDRED": 100,
+		"TWENTY": 20,
+		"TEN": 10,
+		"FIVE": 5,
+		"ONE": 1,
+		"QUARTER": 0.25,
+		"DIME": 0.1,
+		"NICKEL": 0.05,
+		"PENNY": 0.01,
+	}
+	let ctid = cashTypeInDrawer(cashType, cid);
+	let requiredChange = priceToCashConvert(changeValue, cashType);
+
+	if (requiredChange > 0 && ctid > 0) {
+		return (Math.min(requiredChange, ctid) * cashValues[cashType]);
+	}
+	return (-1);
+}
+
 function checkCashRegister(price, cash, cid) {
 	let status = "OPEN";
-	let changeValue = Number(cash - price);
 	let change = [];
+	let changeValue = Number(cash - price);
+	let cashTypes = [
+		"ONE HUNDRED",
+		"TWENTY",
+		"TEN",
+		"FIVE",
+		"ONE",
+		"QUARTER",
+		"DIME",
+		"NICKEL",
+		"PENNY",
+	];
 
-	for (cashType in cashValues) {
-		let ctid = cashTypeInDrawer(cashType, cid);
-		let requiredChange = priceToCashConvert(changeValue, cashType);
+	for (const type of cashTypes) {
+		let changeCashType = getCashTypeChange(changeValue, type, cid);
 
-		if (requiredChange > 0 && ctid > 0) {
-			let cashChange = Math.min(requiredChange, ctid) * cashValues[cashType];
-			change.push([cashType, cashChange]);
-			changeValue = (changeValue - cashChange).toFixed(2);
+		if (changeCashType !== -1) {
+			change.push([type, changeCashType]);
+			changeValue = (changeValue - changeCashType).toFixed(2);
 		}
-		if (changeValue === 0)
-			break ;
 	}
-	return {
-		"status": status,
-		change
-	};
+	if (change.length === 0 || parseFloat(changeValue) !== 0) {
+		change = [];
+		status = 'INSUFFICIENT_FUNDS';
+	}
+	return {'status': status, 'change': change};
 }
 
 let cid = [
@@ -68,7 +101,8 @@ let cid = [
 	["TWENTY", 60], 
 	["ONE HUNDRED", 100]
 ];
- console.log(checkCashRegister(3.26, 100, cid)); // error in the penny
+
+console.log(checkCashRegister(3.26, 100, cid)); // error in the penny
 
 // let cid = [
 // 	["PENNY", 1.01],
