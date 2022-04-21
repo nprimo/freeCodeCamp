@@ -22,17 +22,19 @@ cashValues = {
 	"ONE HUNDRED": 100
 }
 
-function priceToCashConvert(price, cashValues) {
-	let result = {}
-
-	for (const cashType in cashValues) {
-		result[cashType] = Math.floor(price / cashValues[cashType]);
-	}
-	return result;
+function priceToCashConvert(price, cashValues, cashType) {
+	return Math.floor(price / cashValues[cashType]);
 }
 
-let result = priceToCashConvert(23.63, cashValues);
+function checkCashRegister(price, cash, cid) {
+	let status = "INSUFFICIENT_FUNDS";
+	let changeValue = cash - price;
+	let change = cid;
 
-for (key in result) {
-	console.log(key, result[key])
+	return {
+		"status": status,
+		change
+	};
 }
+
+
