@@ -11,15 +11,15 @@
 /* ************************************************************************** */
 
 cashValues = {
-	"PENNY": 0.01,
-	"NICKEL": 0.05,
-	"DIME": 0.1,
-	"QUARTER": 0.25,
-	"ONE": 1,
-	"FIVE": 5,
-	"TEN": 10,
+	"ONE HUNDRED": 100,
 	"TWENTY": 20,
-	"ONE HUNDRED": 100
+	"TEN": 10,
+	"FIVE": 5,
+	"ONE": 1,
+	"QUARTER": 0.25,
+	"DIME": 0.1,
+	"NICKEL": 0.05,
+	"PENNY": 0.01,
 }
 
 function priceToCashConvert(price, cashValues, cashType) {
@@ -38,3 +38,6 @@ function checkCashRegister(price, cash, cid) {
 }
 
 
+for (key in cashValues) {
+	console.log(priceToCashConvert(23.63, cashValues, key))
+}
